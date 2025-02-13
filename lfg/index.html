@@ -5,8 +5,30 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>E-Cricket - Coming Soon</title>
+
+  <link rel="apple-touch-icon" sizes="57x57" href="media/favicons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="media/favicons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="media/favicons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="media/favicons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="media/favicons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="media/favicons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="media/favicons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="media/favicons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="media/favicons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="media/favicons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="media/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="media/favicons/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="media/favicons/favicon-16x16.png">
+
+  <link rel="manifest" href="media/favicons/manifest.json">
+
+  <meta name="msapplication-TileColor" content="#9747FF">
+  <meta name="msapplication-TileImage" content="media/favicons/ms-icon-144x144.png">
+
+  <meta name="theme-color" content="#9747FF">
+
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.cdnfonts.com/css/heading-now-trial" rel="stylesheet">
+
   <meta name="description" content="LightFuryGames">
 
   <meta property="og:title" content="">
@@ -17,13 +39,7 @@
 </head>
 
 <body>
-<nav>
-<!--  <a href="#home"><span>H</span><span>o</span><span>m</span><span>e</span></a>-->
-<!--  <a href="#about"><span>A</span><span>b</span><span>o</span><span>u</span><span>t</span> <span>U</span><span>s</span></a>-->
-<!--  <a href="#services"><span>S</span><span>e</span><span>r</span><span>v</span><span>i</span><span>c</span><span>e</span><span>s</span></a>-->
-<!--  <a href="#portfolio"><span>P</span><span>o</span><span>r</span><span>t</span><span>f</span><span>o</span><span>l</span><span>i</span><span>o</span></a>-->
-<!--  <a href="#contact"><span>C</span><span>o</span><span>n</span><span>t</span><span>a</span><span>c</span><span>t</span></a>-->
-</nav>
+<nav></nav>
 
 <div class="first-container" id="home">
   <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;">
@@ -58,7 +74,6 @@
 
     <div class="cylinder-text"></div>
   </div>
-  <div class="arrow"></div>
 </div>
 <script>
   function updateBGScale() {
@@ -70,15 +85,13 @@
   updateBGScale();
 
   document.addEventListener('DOMContentLoaded', function() {
-    // === Editable parameters ===
     const rows = 24, cols = 24;
     const gapRatio = 0.05;
-    const initialDelay = 1000;       // Delay (ms) before tile/mask animation starts
+    const initialDelay = 1000;
     const delayFactor = 30;
     const tileFadeDuration = 400;
     const maskDurationMultiplier = 0.6;
 
-    // === Calculate maximum distance from center of grid ===
     const centerRow = (rows - 1) / 2;
     const centerCol = (cols - 1) / 2;
     const maxDistance = Math.sqrt(centerRow * centerRow + centerCol * centerCol);
@@ -137,18 +150,15 @@
       if (progress < 1) {
         requestAnimationFrame(animateMask);
       } else {
-        // Show E-CRICKET first
         setTimeout(() => {
           const eCricketContainer = document.querySelector('.e-cricket-container');
           eCricketContainer.classList.add('animate');
 
-          // Listen for the end of the sliding overlay animation
           const slidingOverlay = eCricketContainer.querySelector('.sliding-overlay');
           slidingOverlay.addEventListener('animationend', () => {
-            // Start COMING SOON animation after E-CRICKET animation completes
             setTimeout(() => {
               animateText("reveal");
-            }, 500); // Additional delay after E-CRICKET animation
+            }, 500);
           });
         }, 500);
       }
