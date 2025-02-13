@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@100..900&display=swap');
 
-
 * {
     margin: 0;
     padding: 0;
@@ -145,10 +144,10 @@ nav a span:nth-child(9) { animation-delay: 0.8s; }
     left: 50%;
     bottom: 0;
     transform-origin: bottom center;
-    transform: translateX(-50%);
+    transform: translateX(-50%) scale(0.7);
     object-fit: cover;
-    animation: heroAppear 6s cubic-bezier(0.34, 0.66, 0.74, 1) forwards;
     z-index: 1002;
+    animation: heroAppear 6s cubic-bezier(0.34, 0.66, 0.74, 1) forwards;
 }
 
 @keyframes heroAppear {
