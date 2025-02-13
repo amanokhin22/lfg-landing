@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LFG Landing</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.cdnfonts.com/css/heading-now-trial" rel="stylesheet">
+  <meta name="description" content="LightFuryGames">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+  <meta property="og:image:alt" content="">
+</head>
+
+<body>
+<nav>
+  <a href="#home"><span>H</span><span>o</span><span>m</span><span>e</span></a>
+  <a href="#about"><span>A</span><span>b</span><span>o</span><span>u</span><span>t</span> <span>U</span><span>s</span></a>
+  <a href="#services"><span>S</span><span>e</span><span>r</span><span>v</span><span>i</span><span>c</span><span>e</span><span>s</span></a>
+  <a href="#portfolio"><span>P</span><span>o</span><span>r</span><span>t</span><span>f</span><span>o</span><span>l</span><span>i</span><span>o</span></a>
+  <a href="#contact"><span>C</span><span>o</span><span>n</span><span>t</span><span>a</span><span>c</span><span>t</span></a>
+</nav>
+
+<div class="first-container" id="home">
+  <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;">
+    <defs>
+      <mask id="circleMask" maskUnits="userSpaceOnUse" x="0" y="0" width="2048" height="2048">
+        <rect x="0" y="0" width="2048" height="2048" fill="white"/>
+        <circle id="maskCircle" cx="1024" cy="1024" r="0" fill="black" filter="url(#blurFilter)"/>
+      </mask>
+      <filter id="blurFilter">
+        <feGaussianBlur stdDeviation="24"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <div class="BG" id="BG">
+    <div class="overlay" id="overlay"></div>
+    <div class="mask-overlay" id="maskOverlay"></div>
+  </div>
+  <div class="hero">
+    <img
+            class="hero-image"
+            src="./media/images/player.png"
+            alt="Hero Image"
+    />
+
+    <div class="cylinder-text"></div>
+  </div>
+  <div class="arrow"></div>
+</div>
+<script>
+  function updateBGScale() {
+    const bg = document.getElementById('BG');
+    const scale = Math.max(window.innerWidth / 2048, window.innerHeight / 2048);
+    bg.style.transform = 'translate(-50%, -50%) scale(' + scale + ')';
+  }
+  window.addEventListener('resize', updateBGScale);
+  updateBGScale();
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // === Editable parameters ===
+    const rows = 24, cols = 24;
+    const gapRatio = 0.05;
+    const initialDelay = 1000;       // Delay (ms) before tile/mask animation starts
+    const delayFactor = 30;
+    const tileFadeDuration = 400;
+    const maskDurationMultiplier = 0.6;
+
+    // === Calculate maximum distance from center of grid ===
+    const centerRow = (rows - 1) / 2;
+    const centerCol = (cols - 1) / 2;
+    const maxDistance = Math.sqrt(centerRow * centerRow + centerCol * centerCol);
+    const maxTileDelay = initialDelay + maxDistance * delayFactor;
+    const maskAnimationDuration = maxTileDelay * maskDurationMultiplier;
+
+    const overlay = document.getElementById('overlay');
+    const cellWidthPercent = 100 / cols;
+    const cellHeightPercent = 100 / rows;
+    const tileWidthPercent = cellWidthPercent * (1 - gapRatio);
+    const tileHeightPercent = cellHeightPercent * (1 - gapRatio);
+    const gapOffsetX = cellWidthPercent * (gapRatio / 2);
+    const gapOffsetY = cellHeightPercent * (gapRatio / 2);
+
+    const tiles = [];
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        const tile = document.createElement('div');
+        tile.classList.add('tile');
+        tile.style.width  = tileWidthPercent + '%';
+        tile.style.height = tileHeightPercent + '%';
+        tile.style.top    = (row * cellHeightPercent + gapOffsetY) + '%';
+        tile.style.left   = (col * cellWidthPercent + gapOffsetX) + '%';
+        overlay.appendChild(tile);
+
+        const dRow = row - centerRow;
+        const dCol = col - centerCol;
+        const distance = Math.sqrt(dRow * dRow + dCol * dCol);
+        tiles.push({ element: tile, distance: distance });
+      }
+    }
+
+    tiles.forEach(item => {
+      const delay = initialDelay + item.distance * delayFactor;
+      setTimeout(() => {
+        item.element.style.opacity = 0;
+      }, delay);
+    });
+
+    const maskCircle = document.getElementById('maskCircle');
+    const animationDelay = initialDelay;
+    const animationDuration = maskAnimationDuration;
+    const startTime = performance.now() + animationDelay;
+    const endRadius = Math.hypot(2048, 2048) / 2;
+
+    function animateMask(now) {
+      if (now < startTime) {
+        requestAnimationFrame(animateMask);
+        return;
+      }
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / animationDuration, 1);
+      const easedProgress = 1 - Math.pow(1 - progress, 2);
+      const currentRadius = easedProgress * endRadius;
+      maskCircle.setAttribute('r', currentRadius);
+      if (progress < 1) {
+        requestAnimationFrame(animateMask);
+      } else {
+        // Show "COMING SOON" text after background animation completes
+        setTimeout(() => {
+          animateText("reveal");
+        }, 500); // Add a small delay after the background animation
+      }
+    }
+    requestAnimationFrame(animateMask);
+  });
+
+  function updateScale() {
+    const container = document.querySelector('.cylinder-text');
+    const designWidth = 1900;
+    const designHeight = 245;
+
+    const scaleW = window.innerWidth / designWidth;
+    const scaleH = window.innerHeight / designHeight;
+
+    const maxScaleBasedOnHeight = (window.innerHeight * 0.25) / designHeight;
+
+    let scaleFactor = Math.min(scaleW, scaleH, maxScaleBasedOnHeight);
+
+    container.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
+  }
+
+  updateScale();
+  window.addEventListener('resize', updateScale);
+
+  function createLetters() {
+    const text = "COMING SOON";
+    const container = document.querySelector('.cylinder-text');
+    container.innerHTML = "";
+
+    const letters = text.split("");
+    const totalLetters = letters.length;
+    const centerIndex = (totalLetters - 1) / 2;
+
+    const maxAngleDeg = 55;
+    const maxNegativeSpacing = 160;
+
+    letters.forEach((char, i) => {
+      const span = document.createElement("span");
+      span.className = "letter";
+      span.textContent = char;
+
+      const t = (i - centerIndex) / centerIndex;
+
+      const angleDeg = maxAngleDeg * t * t * (t >= 0 ? 1 : -1);
+      const angleRad = angleDeg * Math.PI / 180;
+      const scale = Math.cos(angleRad);
+
+      const extraX = maxNegativeSpacing * Math.pow(Math.abs(t), 3) * -Math.sign(t);
+
+      span.style.transform = `perspective(350px) translateX(${extraX}px) rotateY(${angleDeg}deg) scale(${scale})`;
+
+      container.appendChild(span);
+    });
+  }
+
+  createLetters();
+
+  function animateText(mode) {
+    const letterElements = Array.from(document.querySelectorAll('.cylinder-text .letter'));
+    const shuffledLetters = letterElements.sort(() => Math.random() - 0.5);
+    const delayBetween = 70;
+
+    shuffledLetters.forEach((letter, index) => {
+      setTimeout(() => {
+        if (mode === "reveal") {
+          letter.style.opacity = 1;
+          letter.style.filter = 'blur(0px)';
+        } else if (mode === "hide") {
+          letter.style.opacity = 0;
+          letter.style.filter = 'blur(40px)';
+        }
+      }, index * delayBetween);
+    });
+  }
+</script>
+</body>
+</html>
