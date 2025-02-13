@@ -25,7 +25,7 @@ nav {
     aspect-ratio: 6.13;
     justify-content: center;
     align-items: flex-start;
-    background-image: url('./media/images/navbar.png');
+    background-image: url('media/images/navbar.png');
     background-position: top center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -94,7 +94,7 @@ nav a span:nth-child(9) { animation-delay: 0.8s; }
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: url('./media/images/stadium.png');
+    background: url('media/images/stadium.png');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
