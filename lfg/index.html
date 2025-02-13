@@ -18,11 +18,11 @@
 
 <body>
 <nav>
-  <a href="#home"><span>H</span><span>o</span><span>m</span><span>e</span></a>
-  <a href="#about"><span>A</span><span>b</span><span>o</span><span>u</span><span>t</span> <span>U</span><span>s</span></a>
-  <a href="#services"><span>S</span><span>e</span><span>r</span><span>v</span><span>i</span><span>c</span><span>e</span><span>s</span></a>
-  <a href="#portfolio"><span>P</span><span>o</span><span>r</span><span>t</span><span>f</span><span>o</span><span>l</span><span>i</span><span>o</span></a>
-  <a href="#contact"><span>C</span><span>o</span><span>n</span><span>t</span><span>a</span><span>c</span><span>t</span></a>
+<!--  <a href="#home"><span>H</span><span>o</span><span>m</span><span>e</span></a>-->
+<!--  <a href="#about"><span>A</span><span>b</span><span>o</span><span>u</span><span>t</span> <span>U</span><span>s</span></a>-->
+<!--  <a href="#services"><span>S</span><span>e</span><span>r</span><span>v</span><span>i</span><span>c</span><span>e</span><span>s</span></a>-->
+<!--  <a href="#portfolio"><span>P</span><span>o</span><span>r</span><span>t</span><span>f</span><span>o</span><span>l</span><span>i</span><span>o</span></a>-->
+<!--  <a href="#contact"><span>C</span><span>o</span><span>n</span><span>t</span><span>a</span><span>c</span><span>t</span></a>-->
 </nav>
 
 <div class="first-container" id="home">
@@ -48,6 +48,11 @@
             src="./media/images/player.png"
             alt="Hero Image"
     />
+
+    <div class="e-cricket-container">
+      <img src="media/images/e-cricket.svg" alt="logo" class="e-cricket-text" />
+      <div class="sliding-overlay"></div>
+    </div>
 
     <div class="cylinder-text"></div>
   </div>
@@ -130,10 +135,20 @@
       if (progress < 1) {
         requestAnimationFrame(animateMask);
       } else {
-        // Show "COMING SOON" text after background animation completes
+        // Show E-CRICKET first
         setTimeout(() => {
-          animateText("reveal");
-        }, 500); // Add a small delay after the background animation
+          const eCricketContainer = document.querySelector('.e-cricket-container');
+          eCricketContainer.classList.add('animate');
+
+          // Listen for the end of the sliding overlay animation
+          const slidingOverlay = eCricketContainer.querySelector('.sliding-overlay');
+          slidingOverlay.addEventListener('animationend', () => {
+            // Start COMING SOON animation after E-CRICKET animation completes
+            setTimeout(() => {
+              animateText("reveal");
+            }, 500); // Additional delay after E-CRICKET animation
+          });
+        }, 500);
       }
     }
     requestAnimationFrame(animateMask);
@@ -141,17 +156,25 @@
 
   function updateScale() {
     const container = document.querySelector('.cylinder-text');
-    const designWidth = 1900;
-    const designHeight = 245;
+    const eCricketContainer = document.querySelector('.e-cricket-container');
+    const designWidth = 1800;
+    const designHeight = 230;
+    const eCricketDesignWidth = 1100;
+    const eCricketDesignHeight = 142;
 
     const scaleW = window.innerWidth / designWidth;
     const scaleH = window.innerHeight / designHeight;
+    const eCricketScaleW = window.innerWidth / eCricketDesignWidth;
+    const eCricketScaleH = window.innerHeight / eCricketDesignHeight;
 
     const maxScaleBasedOnHeight = (window.innerHeight * 0.25) / designHeight;
+    const maxECricketScaleBasedOnHeight = (window.innerHeight * 0.15) / eCricketDesignHeight;
 
     let scaleFactor = Math.min(scaleW, scaleH, maxScaleBasedOnHeight);
+    let eCricketScaleFactor = Math.min(eCricketScaleW, eCricketScaleH, maxECricketScaleBasedOnHeight);
 
     container.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
+    eCricketContainer.style.transform = `translate(-50%, 0) scale(${eCricketScaleFactor})`;
   }
 
   updateScale();
@@ -167,7 +190,7 @@
     const centerIndex = (totalLetters - 1) / 2;
 
     const maxAngleDeg = 55;
-    const maxNegativeSpacing = 160;
+    const maxNegativeSpacing = 100;
 
     letters.forEach((char, i) => {
       const span = document.createElement("span");
@@ -192,10 +215,15 @@
 
   function animateText(mode) {
     const letterElements = Array.from(document.querySelectorAll('.cylinder-text .letter'));
+    // const container = document.querySelector('.cylinder-text');
     const shuffledLetters = letterElements.sort(() => Math.random() - 0.5);
     const delayBetween = 70;
+    let lastAnimationEndTime = 0;
 
     shuffledLetters.forEach((letter, index) => {
+      const delay = index * delayBetween;
+      lastAnimationEndTime = delay + 1000;
+
       setTimeout(() => {
         if (mode === "reveal") {
           letter.style.opacity = 1;
@@ -204,8 +232,12 @@
           letter.style.opacity = 0;
           letter.style.filter = 'blur(40px)';
         }
-      }, index * delayBetween);
+      }, delay);
     });
+
+    // setTimeout(() => {
+    //   container.classList.add('show-gradient');
+    // }, lastAnimationEndTime - 500);
   }
 </script>
 </body>

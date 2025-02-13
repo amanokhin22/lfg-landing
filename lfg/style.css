@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@100..900&display=swap');
+
+
 * {
     margin: 0;
     padding: 0;
@@ -10,6 +13,7 @@
         display: none;
     }
 }
+
 body {
     font-family: Arial, sans-serif;
     background-color: #000;
@@ -18,31 +22,49 @@ nav {
     position: fixed;
     top: 0;
     width: 100%;
-    height: 334px;
+    height: max(342px, 30vh);
     justify-content: center;
     align-items: flex-start;
     background-image: url('./media/images/navbar.png');
-    background-position: center;
+    background-position: top center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
     display: inline-flex;
-    gap: 48px;
+    gap: clamp(16px, 3vw, 48px);
     z-index: 1000;
+    flex-wrap: wrap;
+    transform-origin: top;
+    transform: scaleY(1);
+    transition: transform 0.3s ease;
 }
+
+@media (min-width: 1920px) {
+    nav {
+        transform: scaleY(0.8);
+    }
+}
+
+@media (min-width: 2560px) {
+    nav {
+        transform: scaleY(0.6);
+    }
+}
+
 nav a {
     display: inline-block;
     text-decoration: none;
     color: #FFF;
-    margin-top: 45px;
+    margin-top: clamp(20px, 4vh, 45px);
     text-shadow: 0 0 4px #FFF;
     font-family: "HeadingNow Var Trial", sans-serif;
-    font-size: 24px;
+    font-size: clamp(16px, 2vw, 24px);
     font-style: normal;
     font-weight: 400;
     line-height: normal;
     opacity: 1;
     white-space: nowrap;
     z-index: 1002;
+    transition: transform 0.3s ease;
 }
 
 nav a span {
@@ -87,7 +109,10 @@ nav a span:nth-child(9) { animation-delay: 0.8s; }
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: url('./media/images/stadium.png') no-repeat center center;
+    background: url('./media/images/stadium.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
 }
 
 .overlay {
@@ -137,48 +162,113 @@ nav a span:nth-child(9) { animation-delay: 0.8s; }
     transform-origin: bottom center;
     transform: translateX(-50%);
     object-fit: cover;
-    animation: heroAppear 6s ease forwards;
-    /*animation-delay: 1s;*/
+    /*opacity: 0;*/
+    animation: heroAppear 6s cubic-bezier(0.34, 0.66, 0.74, 1) forwards;
     z-index: 1002;
 }
 
 @keyframes heroAppear {
     0% {
-        opacity: 0;
+        /*opacity: 0;*/
         transform: translateX(-50%) scale(0.7);
     }
-    20% {
+    100% {
+        /*opacity: 1;*/
+        transform: translateX(-50%) scale(1);
+    }
+}
+
+.e-cricket-container {
+    position: absolute;
+    bottom: 65%;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 142px;
+    width: 1050px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1002;
+    transform-origin: center;
+}
+
+.e-cricket-container.animate {
+    opacity: 1;
+    visibility: visible;
+}
+
+.e-cricket-text {
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    transform: scale(0.8);
+}
+
+.e-cricket-container.animate .e-cricket-text {
+    animation: showText 0.5s ease forwards;
+    animation-delay: 1s;
+}
+
+@keyframes showText {
+    from {
+        opacity: 0;
+    }
+    to {
         opacity: 1;
-        transform: translateX(-50%) scale(0.76);
+    }
+}
+
+.sliding-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    transform: translateX(-101%);
+    z-index: 2;
+}
+
+.e-cricket-container.animate .sliding-overlay {
+    animation: slideReveal 2s ease-in-out forwards;
+}
+
+@keyframes slideReveal {
+    0% {
+        transform: translateX(-101%);
+    }
+    50% {
+        transform: translateX(0);
     }
     100% {
-        opacity: 1;
-        transform: translateX(-50%) scale(1);
+        transform: translateX(101%);
     }
 }
 
 .cylinder-text {
     position: absolute;
-    bottom: 200px;
+    top: 78%;
     left: 50%;
-    width: 1900px;
+    width: 1800px;
     text-align: center;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     pointer-events: none;
-    z-index: 1003;
+    z-index: 1002;
 }
 
 .letter {
     display: inline-block;
-    font-family: "Audiowide", serif;
-    font-weight: 400;
+    font-family: "Big Shoulders Display", sans-serif;
+    font-weight: 500;
     font-style: normal;
     font-size: 12rem;
     color: rgba(255, 255, 255, 0.60);
     text-shadow: 0 0 4px rgba(255, 255, 255, 0.40), 0 0 24px rgba(255, 255, 255, 0.60);
-    margin: 0 1rem;
+    margin: 0 3rem;
     transform-origin: center;
-
     opacity: 0;
     filter: blur(40px);
     transition: opacity 2s ease, filter 2s ease;
@@ -236,4 +326,93 @@ nav a span:nth-child(9) { animation-delay: 0.8s; }
     align-items: center;
     font-size: 36px;
     color: white;
+}
+
+@media (max-width: 768px) {
+    /*nav {*/
+    /*    height: min(334px, 35vh);*/
+    /*    gap: 12px;*/
+    /*    padding: 0 10px;*/
+    /*    justify-content: space-around;*/
+    /*}*/
+
+    /*nav a {*/
+    /*    margin-top: clamp(15px, 3vh, 30px);*/
+    /*    font-size: clamp(14px, 4vw, 18px);*/
+    /*}*/
+
+    .arrow {
+        height: 70px;
+        bottom: 30px;
+    }
+    .arrow::before,
+    .arrow::after {
+        width: 30px;
+    }
+    .arrow::before {
+        bottom: 10px;
+        left: -21px;
+    }
+
+    .arrow::after {
+        bottom: 10px;
+        right: -21px;
+    }
+
+    .e-cricket-container {
+        bottom: 60%;
+    }
+}
+
+@media (max-width: 480px) {
+    .arrow {
+        bottom: 25px;
+        width: 3px;
+        height: 30px;
+    }
+    .arrow::before,
+    .arrow::after {
+        width: 10px;
+        height: 3px;
+    }
+    .arrow::before {
+        bottom: 4px;
+        left: -7px;
+    }
+
+    .arrow::after {
+        bottom: 4px;
+        right: -7px;
+    }
+    .cylinder-text {
+        bottom: 25%;
+    }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+    .arrow {
+        bottom: 25px;
+        width: 3px;
+        height: 30px;
+    }
+    .arrow::before,
+    .arrow::after {
+        width: 10px;
+        height: 3px;
+    }
+    .arrow::before {
+        bottom: 4px;
+        left: -7px;
+    }
+
+    .arrow::after {
+        bottom: 4px;
+        right: -7px;
+    }
+    .cylinder-text {
+        bottom: -65%;
+    }
+    .e-cricket-container {
+        bottom: 50%;
+    }
 }
