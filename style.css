@@ -167,7 +167,7 @@ nav a span:nth-child(9) { animation-delay: 0.8s; }
     left: 50%;
     transform: translateX(-50%);
     height: 142px;
-    width: 1050px;
+    width: 900px;
     display: flex;
     justify-content: center;
     align-items: center;
