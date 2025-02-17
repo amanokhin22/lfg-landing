@@ -87,8 +87,12 @@
   updateBGScale();
 
   document.addEventListener('DOMContentLoaded', function () {
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+            (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-    const rows = 12, cols = 12;
+    const rows = isIOS ? 8 : 24;
+    const cols = isIOS ? 8 : 24;
     const gapRatio = 0.05;
     const initialDelay = 1000;
     const delayFactor = 30;
@@ -140,7 +144,6 @@
     const startTime = performance.now() + animationDelay;
     const endRadius = Math.hypot(2048, 2048) / 2;
 
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
     const maskOverlay = document.getElementById('maskOverlay');
 
     if (isSafari) {
