@@ -384,7 +384,7 @@ nav a span:nth-child(9) { animation-delay: 0.8s; }
         bottom: 50%;
     }
     .hero-image {
-        height: 90dvh;
-        max-height: 90vh;
+        height: 85dvh;
+        max-height: 85vh;
     }
 }
