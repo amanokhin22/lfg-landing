@@ -75,6 +75,23 @@
     </div>
 
     <div class="cylinder-text"></div>
+    <div class="social-networks-wrapper">
+      <a href="https://www.facebook.com/permalink.php?story_fbid=122097543278609964&id=61568298930392&substory_index=540078888806925" target="_blank" class="social-networks-item">
+        <img src="/media/images/Icon%20-%20Facebook.svg" alt="icon-facebook">
+      </a>
+      <a href="https://www.youtube.com/channel/UCumzgDd4czuBfA8b7p9QuuQ" target="_blank" class="social-networks-item">
+        <img src="/media/images/Icon%20-%20YouTube.svg" alt="icon-youtube">
+      </a>
+      <a href="https://discord.gg/S2RMEw9a" target="_blank" class="social-networks-item">
+        <img src="/media/images/Discord%20New.svg" alt="icon-discord">
+      </a>
+      <a href="https://www.reddit.com/r/Ecricket/" target="_blank" class="social-networks-item">
+        <img src="/media/images/Icon%20-%20Reddit.svg" alt="icon-reddit">
+      </a>
+      <a href="https://www.instagram.com/ecricketgame/" target="_blank" class="social-networks-item">
+        <img src="/media/images/Icon%20-%20Instagram.svg" alt="icon-instagram">
+      </a>
+    </div>
   </div>
 </div>
 <script>
@@ -197,32 +214,6 @@
     }
   });
 
-  function updateScale() {
-    const container = document.querySelector('.cylinder-text');
-    const eCricketContainer = document.querySelector('.e-cricket-container');
-    const designWidth = 1800;
-    const designHeight = 230;
-    const eCricketDesignWidth = 1100;
-    const eCricketDesignHeight = 142;
-
-    const scaleW = window.innerWidth / designWidth;
-    const scaleH = window.innerHeight / designHeight;
-    const eCricketScaleW = window.innerWidth / eCricketDesignWidth;
-    const eCricketScaleH = window.innerHeight / eCricketDesignHeight;
-
-    const maxScaleBasedOnHeight = (window.innerHeight * 0.25) / designHeight;
-    const maxECricketScaleBasedOnHeight = (window.innerHeight * 0.15) / eCricketDesignHeight;
-
-    let scaleFactor = Math.min(scaleW, scaleH, maxScaleBasedOnHeight);
-    let eCricketScaleFactor = Math.min(eCricketScaleW, eCricketScaleH, maxECricketScaleBasedOnHeight);
-
-    container.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
-    eCricketContainer.style.transform = `translate(-50%, 0) scale(${eCricketScaleFactor})`;
-  }
-
-  updateScale();
-  window.addEventListener('resize', updateScale);
-
   function createLetters() {
     const text = "COMING SOON";
     const container = document.querySelector('.cylinder-text');
@@ -258,7 +249,6 @@
 
   function animateText(mode) {
     const letterElements = Array.from(document.querySelectorAll('.cylinder-text .letter'));
-    // const container = document.querySelector('.cylinder-text');
     const shuffledLetters = letterElements.sort(() => Math.random() - 0.5);
     const delayBetween = 70;
     let lastAnimationEndTime = 0;
@@ -278,10 +268,70 @@
       }, delay);
     });
 
-    // setTimeout(() => {
-    //   container.classList.add('show-gradient');
-    // }, lastAnimationEndTime - 500);
+    // Start social networks animation after Coming Soon text
+    setTimeout(() => {
+      animateSocialNetworks();
+    }, lastAnimationEndTime + 500);
   }
+
+  function animateSocialNetworks() {
+    const socialItems = document.querySelectorAll('.social-networks-item');
+    const delayBetween = 200;
+
+    socialItems.forEach((item, index) => {
+      item.style.opacity = '0';
+      item.style.transform = 'translateY(50px)';
+
+      setTimeout(() => {
+        item.style.opacity = '1';
+        item.style.transform = 'translateY(0)';
+      }, index * delayBetween);
+    });
+  }
+
+  function updateScale() {
+    const container = document.querySelector('.cylinder-text');
+    const eCricketContainer = document.querySelector('.e-cricket-container');
+    const socialWrapper = document.querySelector('.social-networks-wrapper');
+
+    const designWidth = 1800;
+    const designHeight = 230;
+    const eCricketDesignWidth = 1100;
+    const eCricketDesignHeight = 142;
+    const socialDesignWidth = 524; // Width of social icons wrapper at full size
+
+    const scaleW = window.innerWidth / designWidth;
+    const scaleH = window.innerHeight / designHeight;
+    const eCricketScaleW = window.innerWidth / eCricketDesignWidth;
+    const eCricketScaleH = window.innerHeight / eCricketDesignHeight;
+    const socialScaleW = Math.min(window.innerWidth / socialDesignWidth, 1);
+
+    const maxScaleBasedOnHeight = (window.innerHeight * 0.25) / designHeight;
+    const maxECricketScaleBasedOnHeight = (window.innerHeight * 0.15) / eCricketDesignHeight;
+    const maxSocialScaleBasedOnHeight = window.innerHeight * 0.12 / 92; // 92px is the original icon size
+
+    let scaleFactor = Math.min(scaleW, scaleH, maxScaleBasedOnHeight);
+    let eCricketScaleFactor = Math.min(eCricketScaleW, eCricketScaleH, maxECricketScaleBasedOnHeight);
+    let socialScaleFactor = Math.min(socialScaleW, maxSocialScaleBasedOnHeight);
+
+    container.style.transform = `translate(-50%, -50%) scale(${scaleFactor})`;
+    eCricketContainer.style.transform = `translate(-50%, 0) scale(${eCricketScaleFactor})`;
+
+    const socialItems = document.querySelectorAll('.social-networks-item');
+    const baseSize = 92; // Original icon size
+    const baseGap = 16; // Original gap between icons
+
+    socialItems.forEach(item => {
+      const newSize = baseSize * socialScaleFactor;
+      item.style.width = `${newSize}px`;
+      item.style.height = `${newSize}px`;
+    });
+
+    socialWrapper.style.gap = `${baseGap * socialScaleFactor}px`;
+  }
+
+  updateScale();
+  window.addEventListener('resize', updateScale);
 </script>
 </body>
 </html>
