@@ -233,7 +233,7 @@ nav a span:nth-child(9) { animation-delay: 0.8s; }
 
 .cylinder-text {
     position: absolute;
-    top: 70%;
+    top: 65%;
     left: 50%;
     width: 1800px;
     text-align: center;
@@ -364,28 +364,29 @@ nav a span:nth-child(9) { animation-delay: 0.8s; }
     .e-cricket-container {
         bottom: 60%;
     }
-    .social-networks-wrapper {
-        bottom: 15px;
-    }
+    /*.social-networks-wrapper {*/
+    /*    bottom: 15px;*/
+    /*}*/
 }
 
 @media (max-width: 480px) {
-    .cylinder-text {
-        bottom: 25%;
-    }
-    .social-networks-wrapper {
-        bottom: 10px;
-    }
+    /*.cylinder-text {*/
+    /*    bottom: 25%;*/
+    /*}*/
+    /*.social-networks-wrapper {*/
+    /*    bottom: 10px;*/
+    /*}*/
 }
 
 @media (orientation: landscape) and (max-height: 560px) {
     .cylinder-text {
-        bottom: -65%;
+        /*bottom: -65%;*/
+        top: 65%
     }
     .e-cricket-container {
         bottom: 50%;
     }
-    .social-networks-wrapper {
-        bottom: 5px;
-    }
+    /*.social-networks-wrapper {*/
+    /*    bottom: 5px;*/
+    /*}*/
 }
