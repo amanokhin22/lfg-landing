@@ -144,11 +144,10 @@ nav a span:nth-child(9) { animation-delay: 0.8s; }
     position: absolute;
     right: 0;
     left: 0;
-    height: 95vh;
+    height: 95dvh;
     margin: auto;
     bottom: 0;
     transform-origin: center bottom;
-    /*transform: scale(0.7);*/
     object-fit: cover;
     z-index: 1002;
     animation: heroAppear 6s cubic-bezier(0.34, 0.66, 0.74, 1) forwards;
